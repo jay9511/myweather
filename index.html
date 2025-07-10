@@ -62,7 +62,7 @@
     }
 
     .icon {
-      font-size: 3.2rem;
+      font-size: 4.5rem; /* Increased icon size */
       margin-bottom: 10px;
     }
 
@@ -280,8 +280,10 @@
     const currentTime = data.current_weather.time;
     const localTime = new Date(currentTime);
 
-    const index = data.hourly.time.findIndex(t => t === currentTime);
-    const uv = index !== -1 ? data.hourly.uv_index[index].toFixed(1) : 'N/A';
+    const hourMatch = data.hourly.time.findIndex(t =>
+      t.startsWith(currentTime.substring(0, 13))
+    );
+    const uv = hourMatch !== -1 ? data.hourly.uv_index[hourMatch].toFixed(1) : 'N/A';
 
     return {
       name: country,
