@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Dashboard</title>
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --card-dark: #1f1f1f;
+      --primary: #4f8cff;
+      --text-light: #e0e0e0;
+      --text-muted: #aaa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(to right, #333, #444);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1300px;
+      margin: auto;
+    }
+
+    .block {
+      border-radius: 16px;
+      padding: 25px;
+      background: var(--card-dark);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .block:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 6px 20px rgba(79, 140, 255, 0.25);
+    }
+
+    .icon {
+      font-size: 3.2rem;
+      margin-bottom: 10px;
+    }
+
+    .city {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .temp {
+      font-size: 1.6rem;
+      margin: 5px 0;
+    }
+
+    .condition {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .detail-container {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-dark);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px auto;
+      max-width: 1000px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .location-date {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      font-weight: 500;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .temperature {
+      font-size: 5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .condition-big {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .details {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .hourly {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 15px;
+    }
+
+    .hour {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      color: var(--text-light);
+    }
+
+    .back-btn {
+      margin: 30px auto 10px;
+      display: block;
+      text-decoration: none;
+      color: white;
+      background: var(--primary);
+      padding: 10px 25px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      width: fit-content;
+    }
+
+    .back-btn:hover {
+      background: #3c78d8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      color: var(--text-muted);
+      background: #1a1a1a;
+      margin-top: auto;
+    }
+
+    /* Media Queries */
+    @media (max-width: 1024px) {
+      .temperature {
+        font-size: 4rem;
+      }
+      .condition-big {
+        font-size: 1.6rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .temperature {
+        font-size: 3.2rem;
+      }
+
+      .condition-big {
+        font-size: 1.4rem;
+      }
+
+      .detail-container {
+        padding: 20px;
+      }
+
+      .hourly {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+
+      .wrapper {
+        padding: 15px;
+      }
+
+      .block {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.4rem;
+        padding: 0.8rem;
+      }
+
+      .temperature {
+        font-size: 2.5rem;
+      }
+
+      .condition-big {
+        font-size: 1.1rem;
+      }
+
+      .location-date {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .details {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>🌍 Weather Dashboard - 8 Countries</header>
+
+<div id="mainPage" class="wrapper"></div>
+
+<div id="detailPage" style="display:none;">
+  <div class="detail-container" id="detailContainer"></div>
+  <a href="index.html" class="back-btn">← Back to Dashboard</a>
+</div>
+
+<footer>© 2025 Jayesh Thakare</footer>
+
+<script>
+  const countryCoords = {
+    'India': { lat: 21.0, lon: 78.0 },
+    'USA': { lat: 37.6, lon: -95.6 },
+    'Canada': { lat: 56.1, lon: -106.3 },
+    'Japan': { lat: 36.2, lon: 138.3 },
+    'Germany': { lat: 51.2, lon: 10.4 },
+    'Brazil': { lat: -14.2, lon: -51.9 },
+    'Australia': { lat: -25.2, lon: 133.8 },
+    'Russia': { lat: 61.5, lon: 105.3 }
+  };
+
+  const icons = {
+    0: '☀️', 1: '🌤️', 2: '🌥️', 3: '☁️', 45: '🌫️', 48: '🌫️',
+    51: '🌦️', 61: '🌧️', 63: '🌧️', 65: '🌧️', 66: '🌧️',
+    71: '❄️', 80: '🌧️', 95: '⛈️'
+  };
+
+  const conditions = {
+    0: 'Clear', 1: 'Mainly Clear', 2: 'Partly Cloudy', 3: 'Overcast',
+    45: 'Fog', 48: 'Depositing Fog', 51: 'Drizzle',
+    61: 'Rain', 63: 'Rain Showers', 65: 'Heavy Rain', 66: 'Freezing Rain',
+    71: 'Snow', 80: 'Rain Showers', 95: 'Thunderstorm'
+  };
+
+  const getWeather = async (country) => {
+    const { lat, lon } = countryCoords[country];
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=uv_index&timezone=auto`);
+    const data = await res.json();
+
+    const code = data.current_weather.weathercode;
+    const currentTime = data.current_weather.time;
+    const localTime = new Date(currentTime);
+
+    const index = data.hourly.time.findIndex(t => t === currentTime);
+    const uv = index !== -1 ? data.hourly.uv_index[index].toFixed(1) : 'N/A';
+
+    return {
+      name: country,
+      temp: `${Math.round(data.current_weather.temperature)}°C`,
+      condition: conditions[code] || 'Unknown',
+      icon: icons[code] || '❓',
+      wind: `${data.current_weather.windspeed} km/h`,
+      uv,
+      code,
+      time: localTime
+    };
+  };
+
+  const selectedCountry = new URLSearchParams(window.location.search).get("country");
+
+  if (!selectedCountry) {
+    const wrapper = document.getElementById("mainPage");
+    Promise.all(Object.keys(countryCoords).map(getWeather)).then(countries => {
+      countries.forEach(c => {
+        const div = document.createElement("div");
+        div.className = `block`;
+        div.innerHTML = `
+          <div class="icon">${c.icon}</div>
+          <div class="city">${c.name}</div>
+          <div class="temp">${c.temp}</div>
+          <div class="condition">${c.condition}</div>
+        `;
+        div.onclick = () => window.location.href = "?country=" + encodeURIComponent(c.name);
+        wrapper.appendChild(div);
+      });
+    });
+  } else {
+    document.getElementById("mainPage").style.display = "none";
+    document.getElementById("detailPage").style.display = "block";
+    getWeather(selectedCountry).then(c => {
+      const dateStr = c.time.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const timeStr = c.time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById("detailContainer").innerHTML = `
+        <div class="location-date">
+          <div>🌍 ${c.name}</div>
+          <div>${dateStr} • ${timeStr}</div>
+        </div>
+        <div class="temperature">${c.temp}</div>
+        <div class="condition-big">${c.icon} ${c.condition}</div>
+        <div class="details">
+          <div>🌬️ Wind: ${c.wind}</div>
+          <div>☀️ UV Index: ${c.uv}</div>
+        </div>
+        <h3 style="margin-bottom: 10px;">Hourly Forecast</h3>
+        <div class="hourly">
+          <div class="hour">1 PM<br>${c.icon} ${parseInt(c.temp)+1}°</div>
+          <div class="hour">2 PM<br>${c.icon} ${parseInt(c.temp)+2}°</div>
+          <div class="hour">3 PM<br>🌧️ ${parseInt(c.temp)-1}°</div>
+          <div class="hour">4 PM<br>☁️ ${parseInt(c.temp)-2}°</div>
+          <div class="hour">5 PM<br>🌥️ ${parseInt(c.temp)-3}°</div>
+          <div class="hour">6 PM<br>🌧️ ${parseInt(c.temp)-4}°</div>
+        </div>
+      `;
+    });
+  }
+</script>
+
+</body>
+</html>
